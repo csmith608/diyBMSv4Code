@@ -118,6 +118,8 @@ PacketReceiveProcessor receiveProc = PacketReceiveProcessor();
 
 PacketSerial_<COBS, framingmarker, 128> myPacketSerial;
 
+//PacketSerial_<COBS, framingmarker, 128> myRPi;
+
 #if defined(ESP8266)
 WiFiEventHandler wifiConnectHandler;
 WiFiEventHandler wifiDisconnectHandler;
@@ -140,6 +142,7 @@ AsyncMqttClient mqttClient;
 void dumpPacketToDebug(packet *buffer)
 {
   SERIAL_DEBUG.print(buffer->address, HEX);
+  //Serial.print(buffer->address, HEX);
   SERIAL_DEBUG.print('/');
   SERIAL_DEBUG.print(buffer->command, HEX);
   SERIAL_DEBUG.print('/');
@@ -968,6 +971,9 @@ void setup()
 #endif
 
   myPacketSerial.setStream(&SERIAL_DATA); // start serial for output
+  /// Sets the function will be called when data is read from the serial stream
+    /// connection and a packet is decoded. The decoded packet will be passed
+    /// to the packet handler. The packet handler must have the form:
   myPacketSerial.setPacketHandler(&onPacketReceived);
 
   //Debug serial output
